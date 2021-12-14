@@ -7,7 +7,7 @@ import time
 import spinup.algos.pytorch.ddpg.core as core
 from spinup.utils.logx import EpochLogger
 import sys
-sys.path.append('/home/test/spinnup/')
+sys.path.append('.')
 print(sys.path)
 from env_pyrep.env_laparo_aty import Laparo_Sim_artery
 from torch.utils.tensorboard import SummaryWriter

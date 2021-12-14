@@ -3,7 +3,7 @@ import os
 import torch
 import numpy as np
 import sys
-sys.path.append('/home/test/spinnup/')
+sys.path.append('.')
 print(sys.path)
 from env_pyrep.env_laparo_aty import Laparo_Sim_artery
 from env_pyrep.EvaluateDisplay import human_evaluate

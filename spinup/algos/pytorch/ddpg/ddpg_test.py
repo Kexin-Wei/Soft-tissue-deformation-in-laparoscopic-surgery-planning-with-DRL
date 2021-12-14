@@ -1,6 +1,6 @@
 import spinup.algos.pytorch.ddpg.core as core
 import sys
-sys.path.append('/home/test/spinnup/')
+sys.path.append('.')
 print(sys.path)
 from env_pyrep.env_laparo_aty import Laparo_Sim_artery
 import torch
@@ -50,6 +50,7 @@ if __name__ == '__main__':
     ac = (torch.load("/home/test/spinnup/output/2021-12-10_ddpg/2021-12-10_14-19-14-ddpg_s0/pyt_save/model.pt"))
     ac_limit = env.action_space.high[0]
     act_dim = env.action_space.shape[0]
+    
     print("start")
     reward_list = []
     writer = SummaryWriter(log_dir='test')
