@@ -3,6 +3,7 @@ from pyrep.backend import sim
 from pyrep.objects.shape import Shape
 from .utils import *
 from .Mesh import Mesh
+from .env_laparo_aty import Laparo_Sim_artery
 
 class Trajectory():
     def __init__(self, listofps = None):
@@ -88,8 +89,8 @@ def keyboard_input():
                      "\t 3. pitch+"
                      "\t 4. row-"
                      "\t 5. insert-"
-                     "\t 6. pitch-")
-    
+                     "\t 6. pitch-")    
+
     try:
         act_num = int(act_code)
         if act_num<=6 and act_num >=1:
@@ -100,10 +101,10 @@ def keyboard_input():
         act = [0,0,0]    
     return np.array(act)
 
-def human_evaluate(ac,env,epochs = 20):
+def human_evaluate(ac,env_ac,env_human,epochs = 20):
     import torch
-    ac_limit = env.action_space.high[0]
-    act_dim = env.action_space.shape[0]
+    ac_limit = env_ac.action_space.high[0]
+    act_dim = env_ac.action_space.shape[0]
     
     print("DRL planning...")
     
@@ -111,13 +112,13 @@ def human_evaluate(ac,env,epochs = 20):
     traj_list = []
     reach_target_ep_flag = False
     for ep in range(epochs):
-        ob, reward_sum, traj,acts = env.reset(), 0, [], []
+        ob, reward_sum, traj,acts = env_ac.reset(), 0, [], []
 
         while 1:
             act = ac.act(torch.as_tensor(ob, dtype=torch.float32))            
-            ob, reward, done,_  = env.step(act)
+            ob, reward, done,_  = env_ac.step(act)
             reward_sum += reward
-            traj.append(env.tt[0].get_position().tolist())
+            traj.append(env_ac.tt[0].get_position().tolist())
             acts.append(act.tolist())
             if done:
                 break
@@ -134,21 +135,30 @@ def human_evaluate(ac,env,epochs = 20):
         # ep is the reward_biggest one
         ep = reward_list.argmax()
     
+    env_ac.shutdown()
     print(f"Planning finished...\nStart guiding...")
     # human guidance, traj[ep], acts[ep]
-    ob = env.reset()
+    ob = env_human.reset()
     eval_traj = Trajectory(traj_list[ep])
     eval_traj.disp()
     arrow = Arrow()
     while 1:
+        # suggest
+        base = env_human.tt[0].get_position()
+        suggest = ac.act(torch.as_tensor(ob, dtype=torch.float32))
+        temp = np.sign(suggest)
+        direction = temp.copy()
+        direction[0] = -temp[1] # pitch  -> x
+        direction[1] =  temp[0] # row    -> y
+        direction[2] =  temp[2] # insert -> z
+        direction = direction / np.linalg.norm(direction)
+
         # select    
         act = keyboard_input()        
-        # suggest
-        base = env.tt[0].get_position()
-        suggest = ac.act(torch.as_tensor(ob, dtype=torch.float32))
-        arrow.update_x(base,suggest)
+            
+        arrow.update_x(base,direction)
         arrow.show()
-        ob,reward, done, _ = env.step(act)
+        ob,reward, done, _ = env_human.step(act)
         if done:
             break
     print("Guiding done")

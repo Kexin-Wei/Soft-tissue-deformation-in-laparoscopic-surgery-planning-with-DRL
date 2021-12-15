@@ -32,6 +32,7 @@ from torch.utils.tensorboard import SummaryWriter
 
 if __name__ == '__main__':
     import argparse
+    import os
     
     parser = argparse.ArgumentParser()
     parser.add_argument('--hid', type=int, default=256)
@@ -46,11 +47,12 @@ if __name__ == '__main__':
     env = Laparo_Sim_artery(bounded=True,headless=args.headless,random_start=args.random_start)
 
     ac = actor_critic(env.observation_space, env.action_space, **ac_kwargs)    
-    
-    ac = (torch.load("/home/test/spinnup/output/2021-12-10_ddpg/2021-12-10_14-19-14-ddpg_s0/pyt_save/model.pt"))
+    intel_path = '2021-12-11_ddpg/2021-12-11_15-18-42-ddpg_s0'
+
+    ac = torch.load(os.path.join("output",intel_path,"pyt_save/model.pt"))
     ac_limit = env.action_space.high[0]
     act_dim = env.action_space.shape[0]
-    
+
     print("start")
     reward_list = []
     writer = SummaryWriter(log_dir='test')

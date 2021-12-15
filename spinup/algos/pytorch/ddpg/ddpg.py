@@ -311,8 +311,9 @@ if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--env', type=str, default='HalfCheetah-v2')
-    parser.add_argument('--hid', type=int, default=256)
+    parser.add_argument('--hid', type=int, default=64)
     parser.add_argument('--l', type=int, default=2)
+    parser.add_argument('--act_noise',type=float,default=0.3)
     parser.add_argument('--gamma', type=float, default=0.99)
     parser.add_argument('--seed', '-s', type=int, default=0)
     parser.add_argument('--epochs', type=int, default=1000)
@@ -327,6 +328,7 @@ if __name__ == '__main__':
 
     ddpg(lambda : gym.make(args.env), actor_critic=core.MLPActorCritic,
          ac_kwargs=dict(hidden_sizes=[args.hid]*args.l), 
-         gamma=args.gamma, seed=args.seed, epochs=args.epochs,
+         gamma=args.gamma, seed=args.seed, epochs=args.epochs, 
+         act_noise=args.act_noise,
          steps_per_epoch=args.steps_per_epoch,
          logger_kwargs=logger_kwargs)
