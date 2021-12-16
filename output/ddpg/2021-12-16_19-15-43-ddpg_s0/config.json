@@ -8,20 +8,20 @@
     "act_noise":	0.3,
     "actor_critic":	"MLPActorCritic",
     "batch_size":	100,
-    "env_fn":	"<function <lambda> at 0x7fadafe9d7b8>",
-    "epochs":	800,
+    "env_fn":	"<function <lambda> at 0x7f713fc372f0>",
+    "epochs":	1000,
     "exp_name":	"ddpg",
     "gamma":	0.99,
     "logger":	{
-        "<spinup.utils.logx.EpochLogger object at 0x7fadafea56a0>":	{
+        "<spinup.utils.logx.EpochLogger object at 0x7f713fc387f0>":	{
             "epoch_dict":	{},
             "exp_name":	"ddpg",
             "first_row":	true,
             "log_current_row":	{},
             "log_headers":	[],
-            "output_dir":	"output/2021-12-16_ddpg/2021-12-16_00-16-22-ddpg_s0",
+            "output_dir":	"output/ddpg/2021-12-16_19-15-43-ddpg_s0",
             "output_file":	{
-                "<_io.TextIOWrapper name='output/2021-12-16_ddpg/2021-12-16_00-16-22-ddpg_s0/progress.txt' mode='w' encoding='UTF-8'>":	{
+                "<_io.TextIOWrapper name='output/ddpg/2021-12-16_19-15-43-ddpg_s0/progress.txt' mode='w' encoding='UTF-8'>":	{
                     "mode":	"w"
                 }
             }
@@ -29,7 +29,7 @@
     },
     "logger_kwargs":	{
         "exp_name":	"ddpg",
-        "output_dir":	"output/2021-12-16_ddpg/2021-12-16_00-16-22-ddpg_s0"
+        "output_dir":	"output/ddpg/2021-12-16_19-15-43-ddpg_s0"
     },
     "max_ep_len":	1000,
     "num_test_episodes":	10,
