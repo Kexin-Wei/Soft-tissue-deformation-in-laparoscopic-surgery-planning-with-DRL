@@ -7,21 +7,21 @@
     },
     "actor_critic":	"MLPActorCritic",
     "clip_ratio":	0.2,
-    "env_fn":	"<function <lambda> at 0x7fd3b677a950>",
+    "env_fn":	"<function <lambda> at 0x7f3f5ccfb950>",
     "epochs":	1000,
     "exp_name":	"ppo",
     "gamma":	0.99,
     "lam":	0.97,
     "logger":	{
-        "<spinup.utils.logx.EpochLogger object at 0x7fd3b67864e0>":	{
+        "<spinup.utils.logx.EpochLogger object at 0x7f3f5cd06518>":	{
             "epoch_dict":	{},
             "exp_name":	"ppo",
             "first_row":	true,
             "log_current_row":	{},
             "log_headers":	[],
-            "output_dir":	"output/ppo/2021-12-16_16-43-11-ppo",
+            "output_dir":	"output/ppo/2021-12-16_18-14-27-ppo",
             "output_file":	{
-                "<_io.TextIOWrapper name='output/ppo/2021-12-16_16-43-11-ppo/progress.txt' mode='w' encoding='UTF-8'>":	{
+                "<_io.TextIOWrapper name='output/ppo/2021-12-16_18-14-27-ppo/progress.txt' mode='w' encoding='UTF-8'>":	{
                     "mode":	"w"
                 }
             }
@@ -29,12 +29,12 @@
     },
     "logger_kwargs":	{
         "exp_name":	"ppo",
-        "output_dir":	"output/ppo/2021-12-16_16-43-11-ppo"
+        "output_dir":	"output/ppo/2021-12-16_18-14-27-ppo"
     },
     "max_ep_len":	1000,
     "pi_lr":	0.0003,
     "save_freq":	10,
-    "seed":	0,
+    "seed":	2,
     "steps_per_epoch":	1000,
     "target_kl":	0.01,
     "train_pi_iters":	80,
