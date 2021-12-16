@@ -76,7 +76,7 @@ def setup_logger_kwargs(exp_name, seed=None, data_dir=None, datestamp=False):
         # Make a seed-specific subfolder in the experiment directory.
         if datestamp:
             hms_time = time.strftime("%Y-%m-%d_%H-%M-%S")
-            subfolder = ''.join([hms_time, '-', exp_name])
+            subfolder = ''.join([hms_time, '-', exp_name,'_s', str(seed)])
         else:
             subfolder = ''.join([exp_name, '_s', str(seed)])
         relpath = osp.join(relpath, subfolder)
