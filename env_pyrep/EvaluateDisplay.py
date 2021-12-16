@@ -84,12 +84,12 @@ def keyboard_input():
     act_map = np.c_[act_row,act_insert,act_pitch].T
     act_map = np.r_[act_map,-act_map]
     act_code = input("Please select move direction:"
-                     "\t 1. row+"
-                     "\t 2. insert+"
-                     "\t 3. pitch+"
-                     "\t 4. row-"
-                     "\t 5. insert-"
-                     "\t 6. pitch-")    
+                     "\t 1. +y"
+                     "\t 2. -z"
+                     "\t 3. -x"
+                     "\t 4. -y"
+                     "\t 5. +z"
+                     "\t 6. +x")    
 
     try:
         act_num = int(act_code)
@@ -101,10 +101,10 @@ def keyboard_input():
         act = [0,0,0]    
     return np.array(act)
 
-def human_evaluate(ac,env_ac,env_human,epochs = 20):
+def human_evaluate(ac,env,epochs = 20):
     import torch
-    ac_limit = env_ac.action_space.high[0]
-    act_dim = env_ac.action_space.shape[0]
+    ac_limit = env.action_space.high[0]
+    act_dim = env.action_space.shape[0]
     
     print("DRL planning...")
     
@@ -112,13 +112,13 @@ def human_evaluate(ac,env_ac,env_human,epochs = 20):
     traj_list = []
     reach_target_ep_flag = False
     for ep in range(epochs):
-        ob, reward_sum, traj,acts = env_ac.reset(), 0, [], []
+        ob, reward_sum, traj,acts = env.reset(), 0, [], []
 
         while 1:
             act = ac.act(torch.as_tensor(ob, dtype=torch.float32))            
-            ob, reward, done,_  = env_ac.step(act)
+            ob, reward, done,_  = env.step(act)
             reward_sum += reward
-            traj.append(env_ac.tt[0].get_position().tolist())
+            traj.append(env.tt[0].get_position().tolist())
             acts.append(act.tolist())
             if done:
                 break
@@ -135,16 +135,15 @@ def human_evaluate(ac,env_ac,env_human,epochs = 20):
         # ep is the reward_biggest one
         ep = reward_list.argmax()
     
-    env_ac.shutdown()
     print(f"Planning finished...\nStart guiding...")
     # human guidance, traj[ep], acts[ep]
-    ob = env_human.reset()
+    ob = env.reset()
     eval_traj = Trajectory(traj_list[ep])
     eval_traj.disp()
     arrow = Arrow()
     while 1:
         # suggest
-        base = env_human.tt[0].get_position()
+        base = env.tt[0].get_position()
         suggest = ac.act(torch.as_tensor(ob, dtype=torch.float32))
         temp = np.sign(suggest)
         direction = temp.copy()
@@ -152,16 +151,17 @@ def human_evaluate(ac,env_ac,env_human,epochs = 20):
         direction[1] =  temp[0] # row    -> y
         direction[2] =  temp[2] # insert -> z
         direction = direction / np.linalg.norm(direction)
-
-        # select    
-        act = keyboard_input()        
-            
+        print(f"Suggest Act: {suggest}")
         arrow.update_x(base,direction)
         arrow.show()
-        ob,reward, done, _ = env_human.step(act)
+
+        # select    
+        act = keyboard_input()                        
+        ob,reward, done, _ = env.step(act)
         if done:
             break
     print("Guiding done")
+    env.shutdown()
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt

@@ -193,8 +193,8 @@ class Laparo_Sim_artery():
                               ])
 
     def calc_reward(self,action):
-        tau1 = 1e-2
-        tau2 = 0.8
+        tau1 = 5e-3
+        tau2 = 1
         tau3 = 5e-3
         self.tt_dist = np.linalg.norm(self.tt[0].get_position()-self.tt[1].get_position())
         liver_x_disp = np.linalg.norm(self.liver.x-self.liver.vertices,axis=-1).mean() #cm        

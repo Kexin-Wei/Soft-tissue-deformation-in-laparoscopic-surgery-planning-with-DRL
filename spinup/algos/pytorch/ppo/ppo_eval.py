@@ -20,14 +20,13 @@ if __name__ == '__main__':
 
     ac_kwargs=dict(hidden_sizes=[args.hid]*args.l)
     actor_critic=core.MLPActorCritic
-    env1 = Laparo_Sim_artery(bounded=True,headless=True,random_start=args.random_start)
-    env2 = Laparo_Sim_artery(bounded=True,headless=False,random_start=args.random_start)
+    env = Laparo_Sim_artery(bounded=True,headless=False,random_start=args.random_start)
 
-    ac = actor_critic(env1.observation_space, env1.action_space, **ac_kwargs)
+    ac = actor_critic(env.observation_space, env.action_space, **ac_kwargs)
     intel_path = '2021-12-13_ppo/2021-12-13_14-47-38-ppo_s0'
-
+    
     ac = torch.load(os.path.join("output",intel_path,"pyt_save/model.pt"))
-    ac_limit = env1.action_space.high[0]
-    act_dim = env1.action_space.shape[0]
+    ac_limit = env.action_space.high[0]
+    act_dim = env.action_space.shape[0]
 
-    human_evaluate(ac,env1,env2,epochs=1)
+    human_evaluate(ac,env,epochs=5)
