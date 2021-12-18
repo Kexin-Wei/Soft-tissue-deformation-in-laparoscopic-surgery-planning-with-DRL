@@ -141,7 +141,7 @@ class Laparo_Sim_artery():
         self.pr.step()
         self.sg.xp = self.sg.x.copy()
         self._update_sg_x()
-        self.live.update_AABB()
+        self.liver.update_AABB()
         #self._collision_handle()
         self._update_liver()
         self.calc_reward(action)                                      
