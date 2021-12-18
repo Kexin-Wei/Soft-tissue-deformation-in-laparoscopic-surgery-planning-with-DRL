@@ -140,10 +140,10 @@ class Laparo_Sim_artery():
         self.pr.step()
         self.sg.xp = self.sg.x.copy()
         self._update_sg_x()
-        self._collision_handle()
+        #self._collision_handle()
         self._update_liver()
         self.calc_reward(action)                                      
-        self.total_time += self.timestep 
+        self.total_time += self.timestep         
         return self._get_state(), self.reward, self.done, None
 
     def _update_sg_x(self):
@@ -192,18 +192,24 @@ class Laparo_Sim_artery():
                               self.liver.aabb
                               ])
 
-    def calc_reward(self,action):
-        tau1 = 5e-3
-        tau2 = 1
-        tau3 = 5e-3
+    def calc_reward(self,action):        
+        # t1:tau1, tau2, tau3 = 5e-3, 1, 5e-3 too small
+        # t2:tau1, tau2, tau3 = np.array([5e-3, 0.1, 5e-3])*1e1
+        tau1, tau2, tau3 = np.array([5e-3, 1, 5e-3])*1e0
         self.tt_dist = np.linalg.norm(self.tt[0].get_position()-self.tt[1].get_position())
         liver_x_disp = np.linalg.norm(self.liver.x-self.liver.vertices,axis=-1).mean() #cm        
-        reward_dist = - tau1 - self.tt_dist*tau2 - liver_x_disp * tau3        
-        self.reward = np.round(reward_dist,2)
+        tem1 = - tau1 
+        # t2:tem2 = - np.power(self.tt_dist,1/3)*tau2 
+        tem2 = - self.tt_dist *tau2 
+        tem3 = - liver_x_disp * tau3        
+        self.reward = np.round(tem1 + tem2 + tem3,2)
 
-        reward_string = f"*** {tau1/reward_dist:.4f} *** {self.tt_dist*tau2/reward_dist:.4f} *** {liver_x_disp*tau3/reward_dist:.4f} *** {reward_dist:.4f}"
+        reward_string = f"*** {tem1:.4f} / {tem1/self.reward:.4f} " \
+                        f"*** {tem2:.4f} / {tem2/self.reward:.4f} " \
+                        f"*** {tem3:.4f} / {tem3/self.reward:.4f} " \
+                        f"*** {self.reward:.4f}"
         # error handle     
-        if np.isnan(self.reward) or reward_dist < -10\
+        if np.isnan(self.reward) \
             or np.isnan(np.sum(action)) \
                 or np.isnan(np.sum(self._get_state())):
             #print(f"************************************************"
@@ -212,23 +218,23 @@ class Laparo_Sim_artery():
             print(f"{reward_string} ***** error")                    
             self.reward = -100
             self.done = 1
+            return 
 
         # liver crash, can't avoid at first exploring
         if self.liver.crash_flag:
-            self.reward = -0.5
+            #self.reward += -0.1
             self.done = 1
             print(f"{reward_string} ***** crash")
-        
+
         # reach target            
         if self.tt_dist <= self.T_ttdist:
-            self.reward = 10
+            #self.reward = 10
             self.done = 1
-            #print("*********************** Reached Target ********************************************************")
             print(f"{reward_string} ***** reach")
         
         # reach limited timesteps
         if self.BOUNDED and self.total_time >= self.time_episode:
-            self.done = 1             
+            self.done = 1    
 
     @property
     def ob_dim(self):

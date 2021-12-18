@@ -11,7 +11,7 @@ sys.path.append('.')
 print(sys.path)
 from env_pyrep.env_laparo_aty import Laparo_Sim_artery
 from torch.utils.tensorboard import SummaryWriter
-
+from multiprocessing import Process
 
 class ReplayBuffer:
     """
@@ -45,6 +45,31 @@ class ReplayBuffer:
         return {k: torch.as_tensor(v, dtype=torch.float32) for k,v in batch.items()}
 
 
+def test_agent(logger,writer,num_test_episodes,t,steps_per_epoch,ac,act_limit,act_dim,max_ep_len):
+
+    def get_action(o, noise_scale):
+        a = ac.act(torch.as_tensor(o, dtype=torch.float32))
+        a += noise_scale * np.random.randn(act_dim)
+        sys.stdout.flush()
+        return np.clip(a, -act_limit, act_limit)
+
+    print("Im testing")
+    test_env = Laparo_Sim_artery(bounded=True,headless=True,random_start=True)
+    sys.stdout.flush()
+    print("create test_env successfully")
+    for j in range(num_test_episodes):
+        print(f"test_ep:{j}")
+        o, d, ep_ret, ep_len = test_env.reset(), False, 0, 0
+        while not(d or (ep_len == max_ep_len)):
+            # Take deterministic actions at test time (noise_scale=0)
+            o, r, d, _ = test_env.step(get_action(o, 0))
+            ep_ret += r
+            ep_len += 1
+            print(o,r,d)
+        logger.store(TestEpRet=ep_ret, TestEpLen=ep_len)
+        writer.add_scalar('DDPG:Reward/test', ep_ret, ((t+1) // steps_per_epoch)*j)
+    print("I'm done")
+    test_env.shutdown()
 
 def ddpg(env_fn, actor_critic=core.MLPActorCritic, ac_kwargs=dict(), seed=0, 
          steps_per_epoch=4000, epochs=100, replay_size=int(1e6), gamma=0.99, 
@@ -232,7 +257,7 @@ def ddpg(env_fn, actor_critic=core.MLPActorCritic, ac_kwargs=dict(), seed=0,
     def get_action(o, noise_scale):
         a = ac.act(torch.as_tensor(o, dtype=torch.float32))
         a += noise_scale * np.random.randn(act_dim)
-        return np.clip(a, -act_limit, act_limit)
+        return np.clip(a, -act_limit, act_limit)    
 
     # Prepare for interaction with environment
     total_steps = steps_per_epoch * epochs
@@ -263,6 +288,8 @@ def ddpg(env_fn, actor_critic=core.MLPActorCritic, ac_kwargs=dict(), seed=0,
         d = False if ep_len==max_ep_len else d
 
         # Store experience to replay buffer
+        if t% 100 ==0:
+            print(f't:{t} a:{ np.round(a,3)} o:{next_o.round(3).tolist()} r:{r}')
         replay_buffer.store(o, a, r, o2, d)
 
         # Super critical, easy to overlook step: make sure to update 
@@ -271,7 +298,7 @@ def ddpg(env_fn, actor_critic=core.MLPActorCritic, ac_kwargs=dict(), seed=0,
 
         # End of trajectory handling
         if d or (ep_len == max_ep_len):
-            print(f'****************************{r}_{env.tt_dist:.4f}')
+            #print(f'****************************{r}_{env.tt_dist:.4f}')
             logger.store(EpRet=ep_ret, EpLen=ep_len)
             writer.add_scalar('DDPG:Reward/train', ep_ret, (t+1) // steps_per_epoch)
             o, ep_ret, ep_len = env.reset(), 0, 0
@@ -290,9 +317,18 @@ def ddpg(env_fn, actor_critic=core.MLPActorCritic, ac_kwargs=dict(), seed=0,
             if (epoch % save_freq == 0) or (epoch == epochs):
                 logger.save_state({'env': env}, None)
 
-            # Test the performance of the deterministic version of the agent.
-            # test_agent()
-
+            # failed Test the performance of the deterministic version of the agent.
+            # p = Process(target=test_agent,args=(logger,writer,num_test_episodes,t,
+            #                                     steps_per_epoch,ac,act_limit,
+            #                                     act_dim,max_ep_len)) # coppeliaSim or PyRep need to create another thread
+            # p.start()
+            # print(p.pid)
+            # try:
+            #     p.join()
+            # except KeyboardInterrupt:
+            #     p.terminate()
+            #     p.join()
+            
             # Log info about epoch
             logger.log_tabular('Epoch', epoch)
             logger.log_tabular('EpRet', with_min_and_max=True)
@@ -313,10 +349,11 @@ if __name__ == '__main__':
     parser.add_argument('--env', type=str, default='HalfCheetah-v2')
     parser.add_argument('--hid', type=int, default=64)
     parser.add_argument('--l', type=int, default=2)
-    parser.add_argument('--act_noise',type=float,default=0.3)
+    parser.add_argument('--act_noise',type=float,default=0.1)
     parser.add_argument('--gamma', type=float, default=0.99)
     parser.add_argument('--seed', '-s', type=int, default=0)
     parser.add_argument('--epochs', type=int, default=1000)
+    parser.add_argument('--test_epochs', type=int, default=2)
     parser.add_argument('--steps_per_epoch', type=int, default=2000)
     parser.add_argument('--exp_name', type=str, default='ddpg')
     parser.add_argument('--headless', action='store_true')
@@ -331,4 +368,5 @@ if __name__ == '__main__':
          gamma=args.gamma, seed=args.seed, epochs=args.epochs, 
          act_noise=args.act_noise,
          steps_per_epoch=args.steps_per_epoch,
+         num_test_episodes=args.test_epochs,
          logger_kwargs=logger_kwargs)

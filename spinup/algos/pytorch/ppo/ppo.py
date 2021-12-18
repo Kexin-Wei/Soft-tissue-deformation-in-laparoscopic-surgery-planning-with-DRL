@@ -312,6 +312,8 @@ def ppo(env_fn, actor_critic=core.MLPActorCritic, ac_kwargs=dict(), seed=0,
             ep_len += 1
 
             # save and log
+            if t% 100 ==0:
+                print(f't:{t} a:{ np.round(a,3)} o:{next_o.round(3).tolist()} r:{r}')
             buf.store(o, a, r, v, logp)
             logger.store(VVals=v)
             
@@ -372,8 +374,8 @@ if __name__ == '__main__':
     parser.add_argument('--l', type=int, default=2)
     parser.add_argument('--gamma', type=float, default=0.99)
     parser.add_argument('--seed', '-s', type=int, default=0)
-    parser.add_argument('--cpu', type=int, default=1) #4
-    parser.add_argument('--steps', type=int, default=1000) #4000
+    parser.add_argument('--cpu', type=int, default=4) #4
+    parser.add_argument('--steps', type=int, default=4000) #4000
     parser.add_argument('--epochs', type=int, default=10000)
     parser.add_argument('--exp_name', type=str, default='ppo')
     parser.add_argument('--headless', action='store_true')
