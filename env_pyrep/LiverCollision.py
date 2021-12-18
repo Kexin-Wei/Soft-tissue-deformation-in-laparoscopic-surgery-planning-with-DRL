@@ -18,7 +18,6 @@ class LiverCollision(LiverDeform, CollisionModel):
     def check_tet_aabb_collision(self, points):
         # return col_pair
         self.update_normal_vecs()
-        self.update_AABB()
         return self._check_tet_aabb_collision(self.x, self.tet_elements, self.volumes6, points)
     
     def collision_response_ray(self,collision_points, tool):

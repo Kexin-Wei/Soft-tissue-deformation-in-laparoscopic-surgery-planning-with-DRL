@@ -117,6 +117,7 @@ class Laparo_Sim_artery():
         dx_target = (rotation_matrix(self.dangle_z + 90,axis='z') @ dx_target.T).T
         self.liver.vertices = (dx_target + self.target_pos)*self.m_to_cm # m to cm
         self.liver.reset_x() # reset crash_flag   
+        self.live.update_AABB()
         self._update_liver()
         #self.liver_show.set_parent(self.tt[1])        
         #self.liver_show.set_position(self.liver_dpos,relative_to=self.tt[1])
@@ -140,6 +141,7 @@ class Laparo_Sim_artery():
         self.pr.step()
         self.sg.xp = self.sg.x.copy()
         self._update_sg_x()
+        self.live.update_AABB()
         #self._collision_handle()
         self._update_liver()
         self.calc_reward(action)                                      
