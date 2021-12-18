@@ -200,7 +200,7 @@ class Laparo_Sim_artery():
         liver_x_disp = np.linalg.norm(self.liver.x-self.liver.vertices,axis=-1).mean() #cm        
         tem1 = - tau1 
         # t2:tem2 = - np.power(self.tt_dist,1/3)*tau2 
-        tem2 = - self.tt_dist *tau2 
+        tem2 = - self.tt_dist * tau2 
         tem3 = - liver_x_disp * tau3        
         self.reward = np.round(tem1 + tem2 + tem3,2)
 
@@ -228,7 +228,7 @@ class Laparo_Sim_artery():
 
         # reach target            
         if self.tt_dist <= self.T_ttdist:
-            #self.reward = 10
+            self.reward = 10
             self.done = 1
             print(f"{reward_string} ***** reach")
         
