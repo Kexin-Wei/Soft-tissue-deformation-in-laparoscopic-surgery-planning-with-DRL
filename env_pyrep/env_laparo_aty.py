@@ -204,7 +204,7 @@ class Laparo_Sim_artery():
         # t2:tem2 = - np.power(self.tt_dist,1/3)*tau2 
         tem2 = - self.tt_dist * tau2 
         tem3 = - liver_x_disp * tau3        
-        self.reward = np.round(tem1 + tem2 + tem3,2)
+        self.reward = np.round(tem1 + tem2 + tem3,3)
 
         reward_string = f"*** {tem1:.4f} / {tem1/self.reward:.4f} " \
                         f"*** {tem2:.4f} / {tem2/self.reward:.4f} " \
