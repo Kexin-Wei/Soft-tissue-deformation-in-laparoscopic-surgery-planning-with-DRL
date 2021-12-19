@@ -377,7 +377,7 @@ if __name__ == '__main__':
     parser.add_argument('--cpu', type=int, default=4) #4
     parser.add_argument('--steps', type=int, default=4000) #4000
     parser.add_argument('--epochs', type=int, default=10000)
-    parser.add_argument('--train_iters', type=int, default=50) #80
+    parser.add_argument('--train_iters', type=int, default=40) #80
     parser.add_argument('--exp_name', type=str, default='ppo')
     parser.add_argument('--headless', action='store_true')
     parser.add_argument('--random_start', action='store_false')
