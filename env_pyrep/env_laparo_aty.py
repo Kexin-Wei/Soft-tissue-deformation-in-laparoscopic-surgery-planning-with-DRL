@@ -210,10 +210,12 @@ class Laparo_Sim_artery():
         self.reward = np.round(tem1 + tem2 + tem3,3)
 
         def set_reward_string():
-            self.reward_string = f"*** {tem1:.4f} / {tem1/self.reward:.4f} " \
-                                 f"*** {tem2:.4f} / {tem2/self.reward:.4f} " \
-                                 f"*** {tem3:.4f} / {tem3/self.reward:.4f} " \
-                                 f"*** {self.reward:.4f}"
+            self.reward_string = ( f"*** {tem1:.4f} / {tem1/self.reward:.4f} " 
+                                   f"*** {tem2:.4f} / {tem2/self.reward:.4f} " 
+                                   f"*** {tem3:.4f} / {tem3/self.reward:.4f} " 
+                                   f"*** {self.reward:.4f}" )
+        set_reward_string()
+        
         # error handle     
         if np.isnan(self.reward) \
             or np.isnan(np.sum(action)) \
