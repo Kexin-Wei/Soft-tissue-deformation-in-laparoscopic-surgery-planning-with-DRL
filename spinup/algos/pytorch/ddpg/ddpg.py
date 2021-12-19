@@ -354,7 +354,8 @@ if __name__ == '__main__':
     parser.add_argument('--seed', '-s', type=int, default=0)
     parser.add_argument('--epochs', type=int, default=1000)
     parser.add_argument('--test_epochs', type=int, default=2)
-    parser.add_argument('--steps_per_epoch', type=int, default=3000)
+    parser.add_argument('--steps_per_epoch', type=int, default=3000) #4000
+    parser.add_argument('--update_every', type=int, default=30) #50
     parser.add_argument('--exp_name', type=str, default='ddpg')
     parser.add_argument('--headless', action='store_true')
     parser.add_argument('--random_start', action='store_false')
@@ -369,4 +370,5 @@ if __name__ == '__main__':
          act_noise=args.act_noise,
          steps_per_epoch=args.steps_per_epoch,
          num_test_episodes=args.test_epochs,
+         update_every = args.update_every,
          logger_kwargs=logger_kwargs)
