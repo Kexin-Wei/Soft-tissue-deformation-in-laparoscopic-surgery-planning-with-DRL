@@ -142,7 +142,7 @@ class Laparo_Sim_artery():
         self.sg.xp = self.sg.x.copy()
         self._update_sg_x()
         self.liver.update_AABB()
-        self._collision_handle()
+        #self._collision_handle()
         self._update_liver()
         self.calc_reward(action)                                      
         self.total_time += self.timestep         
@@ -237,8 +237,7 @@ class Laparo_Sim_artery():
         # reach target            
         if self.tt_dist <= self.T_ttdist:
             # t5: #self.reward = 10
-            # t6:
-            self.reward += 1
+            self.reward = 10
             self.done = 1
             set_reward_string()
             print(f"{self.reward_string} ***** reach")

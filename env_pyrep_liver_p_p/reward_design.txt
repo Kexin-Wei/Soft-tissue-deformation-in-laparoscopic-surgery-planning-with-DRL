@@ -1,0 +1,27 @@
+ob:[
+    position for 3 controlled dofs
+    target_v for 3 controlled dofs
+    tip position :3
+    target position :3
+   ]
+https://github.com/openai/gym/blob/master/gym/envs/mujoco/reacher.py
+ob: [ pos for gesture of the robots 
+      velocity for joints / force
+      vector from tip to target
+    ]
+    3 + 3 + 3 + 1
+
+# this sucks
+reward: [
+        reach : + 100
+        action: -(a1**2+a2**2)*0.1-a3**2*0.05 
+                a1,a2: rotation
+                a3: insertion
+        time: -0.5
+        disntance: -10*dis/dis_init
+        ]
+# final
+reward:[
+        - displacement of artery:
+        - distance from tip to target
+        ]
