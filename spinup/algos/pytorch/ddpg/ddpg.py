@@ -355,7 +355,7 @@ if __name__ == '__main__':
     parser.add_argument('--epochs', type=int, default=1000)
     parser.add_argument('--test_epochs', type=int, default=2)
     parser.add_argument('--steps_per_epoch', type=int, default=3000) #4000
-    parser.add_argument('--update_every', type=int, default=30) #50
+    parser.add_argument('--update_every', type=int, default=80) #50
     parser.add_argument('--exp_name', type=str, default='ddpg')
     parser.add_argument('--headless', action='store_true')
     parser.add_argument('--random_start', action='store_false')
