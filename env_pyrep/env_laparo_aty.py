@@ -231,7 +231,9 @@ class Laparo_Sim_artery():
 
         # liver crash, can't avoid at first exploring
         if self.liver.crash_flag:
-            self.reward += -0.1
+            #t6:self.reward += -0.1
+            #t7:
+            self.reward += 0.05
             self.done = 1
             set_reward_string()
             print(f"{self.reward_string} ***** crash")
