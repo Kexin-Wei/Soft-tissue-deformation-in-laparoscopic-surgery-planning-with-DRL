@@ -258,13 +258,15 @@ matplotlibe subplot
     2. draw_liver
     3. draw_liver_tool
 '''
-def create_axs(subplot_n,block=False):
+def create_axs(subplot_n,block=False,return_fig=False):
     r = int(np.floor(np.sqrt(subplot_n)))
     c = int(subplot_n/r)
     fig = plt.figure(figsize=plt.figaspect(0.5))
     axs = {}
     for i in range(subplot_n):
         axs[i] = fig.add_subplot(r, c, i+1, projection='3d')
+    if return_fig:
+        return axs,fig
     return axs
 
 def draw_liver(liver,ax):
@@ -397,12 +399,14 @@ def _set_axes_radius(ax, origin, radius):
     ax.set_ylim3d([y - radius, y + radius])
     ax.set_zlim3d([z - radius, z + radius]) 
 
-def ax3d_handle(**kwargs):
+def ax3d_handle(return_fig=False,**kwargs):
     if 'ax' in kwargs:
         ax = kwargs['ax']
     else:
         fig = plt.figure(figsize=(8,6))
         ax = fig.add_subplot(projection='3d')
+    if return_fig:
+        return ax,fig
     return ax
 
 

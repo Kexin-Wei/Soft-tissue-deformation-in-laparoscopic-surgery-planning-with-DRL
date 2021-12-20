@@ -220,23 +220,26 @@ class MTM(Mesh):
 
     def plt_Ficp(self,vtx_scl=1,vec_to_scl=5,**kwargs):
         ax = ax3d_handle(**kwargs)
-        ax = self._plt_Fs(self.Ficp,vtx_scl=vtx_scl,vec_scl=vec_to_scl,
+        ax,F_max = self._plt_Fs(self.Ficp,vtx_scl=vtx_scl,vec_scl=vec_to_scl,
                           cp='#003380',cnv='#92b7f0',
                           ax = ax)
+        ax.title.set_text(f"Ficp max: {F_max:.3E}")
         return ax
 
     def plt_Fis(self,vtx_scl=1,vec_to_scl=5,**kwargs):
         ax = ax3d_handle(**kwargs)
-        ax = self._plt_Fs(self.Fis,vtx_scl=vtx_scl,vec_scl=vec_to_scl,
+        ax,F_max = self._plt_Fs(self.Fis,vtx_scl=vtx_scl,vec_scl=vec_to_scl,
                           cp='#f57dd7',cnv='#c20091',
                           ax = ax)
+        ax.title.set_text(f"Fi max: {F_max:.3E}")
         return ax 
 
     def plt_Fes(self,vtx_scl=1,vec_to_scl=5,**kwargs):
         ax = ax3d_handle(**kwargs)
-        ax = self._plt_Fs(-self.Fes,vtx_scl=vtx_scl,vec_scl=vec_to_scl,
+        ax, F_max = self._plt_Fs(-self.Fes,vtx_scl=vtx_scl,vec_scl=vec_to_scl,
                           cp='#7D75FE',cnv='#1D1788',
                           ax = ax)
+        ax.title.set_text(f"Fie max: {F_max:.3E}")
         return ax
 
        
@@ -248,5 +251,5 @@ class MTM(Mesh):
         ax = self._plt_ps_normal_vecs(self.x*vtx_scl,Fs*vec_scl,
                         cp=cp,cnv=cnv,    
                         ax = ax)
-        ax.title.set_text(f"Fes max: {F_max:.3E}")
-        return ax
+        
+        return ax,F_max
