@@ -217,7 +217,7 @@ class Laparo_Sim_artery():
         set_reward_string()
         
         # error handle     
-        if np.isnan(self.reward) \
+        if np.isnan(self.reward) or self.tt_dist>1\
             or np.isnan(np.sum(action)) \
                 or np.isnan(np.sum(self._get_state())):
             #print(f"************************************************"
