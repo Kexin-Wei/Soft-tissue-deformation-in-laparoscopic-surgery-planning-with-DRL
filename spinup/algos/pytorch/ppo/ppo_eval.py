@@ -23,7 +23,7 @@ if __name__ == '__main__':
     env = Laparo_Sim_artery(bounded=True,headless=False,random_start=args.random_start)
 
     ac = actor_critic(env.observation_space, env.action_space, **ac_kwargs)
-    intel_path = '2021-12-13_ppo/2021-12-13_14-47-38-ppo_s0'
+    intel_path = '2021-12-21_ppo/2021-12-21_11-09-31-ppo_s0_outliner'
     
     ac = torch.load(os.path.join("output",intel_path,"pyt_save/model.pt"))
     ac_limit = env.action_space.high[0]

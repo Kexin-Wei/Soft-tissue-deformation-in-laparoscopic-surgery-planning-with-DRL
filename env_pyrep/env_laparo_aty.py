@@ -217,13 +217,13 @@ class Laparo_Sim_artery():
         set_reward_string()
         
         # error handle     
-        if np.isnan(self.reward) or self.tt_dist>1\
+        if np.isnan(self.reward) or np.isinf(self.reward)\
             or np.isnan(np.sum(action)) \
                 or np.isnan(np.sum(self._get_state())):
             #print(f"************************************************"
             #        f"\t reward_dist:{reward_dist:.2f}"
             #        f"\treward_sum:{self.reward}")                     
-            #t8:self.reward = -100
+            #t8: self.reward = -100
             self.reward = -10
             self.done = 1
             set_reward_string()    
@@ -232,9 +232,11 @@ class Laparo_Sim_artery():
 
         # liver crash, can't avoid at first exploring
         if self.liver.crash_flag:
+            #t5:self.reward = -0.1
             #t6:self.reward += -0.1
-            #t7:
-            self.reward += 0.05
+            #t7:self.reward += 0.05
+            #t9:
+            self.reward = 0.05-self.tt_dist
             self.done = 1
             set_reward_string()
             print(f"{self.reward_string} ***** crash")
@@ -242,8 +244,9 @@ class Laparo_Sim_artery():
         # reach target            
         if self.tt_dist <= self.T_ttdist:
             # t5: #self.reward = 10
-            # t6:
-            self.reward += 1
+            # t6:self.reward += 1
+            # t9:
+            self.reward = 1
             self.done = 1
             set_reward_string()
             print(f"{self.reward_string} ***** reach")

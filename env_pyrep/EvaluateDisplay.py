@@ -109,11 +109,14 @@ def human_evaluate(ac,env,epochs = 20):
     print("DRL planning...")
     
     reward_list = np.zeros(epochs)
+    last_tt_dist_list = np.zeros(epochs)
     traj_list = []
+    liver_list = []
     reach_target_ep_flag = False
-    for ep in range(epochs):
-        ob, reward_sum, traj,acts = env.reset(), 0, [], []
 
+    for ep in range(epochs):
+        ob, reward_sum, traj, acts = env.reset(), 0, [], []
+        liver_list.append(env.liver.x)
         while 1:
             act = ac.act(torch.as_tensor(ob, dtype=torch.float32))            
             ob, reward, done,_  = env.step(act)
@@ -122,9 +125,9 @@ def human_evaluate(ac,env,epochs = 20):
             acts.append(act.tolist())
             if done:
                 break
-
         print(f"Ep: {ep},\treward:{reward_sum:.3f}")    
         reward_list[ep]=reward_sum
+        last_tt_dist_list[ep]=env.tt_dist
         traj_list.append(traj)  
 
         if reward == 10: # reach target
@@ -134,10 +137,14 @@ def human_evaluate(ac,env,epochs = 20):
     if not reach_target_ep_flag:
         # ep is the reward_biggest one
         ep = reward_list.argmax()
-    
+        ep = last_tt_dist_list.argmin()
+
     print(f"Planning finished...\nStart guiding...")
     # human guidance, traj[ep], acts[ep]
+    print(ep)
     ob = env.reset()
+    env.liver.x = liver_list[ep].copy()
+    env._update_liver()
     eval_traj = Trajectory(traj_list[ep])
     eval_traj.disp()
     arrow = Arrow()
@@ -161,6 +168,7 @@ def human_evaluate(ac,env,epochs = 20):
         if done:
             break
     print("Guiding done")
+
     env.shutdown()
 
 if __name__ == "__main__":
