@@ -223,7 +223,8 @@ class Laparo_Sim_artery():
             #print(f"************************************************"
             #        f"\t reward_dist:{reward_dist:.2f}"
             #        f"\treward_sum:{self.reward}")                     
-            self.reward = -100
+            #t8:self.reward = -100
+            self.reward = -10
             self.done = 1
             set_reward_string()    
             print(f"{self.reward_string} ***** error") 
