@@ -355,7 +355,9 @@ if __name__ == '__main__':
     parser.add_argument('--epochs', type=int, default=1000)
     parser.add_argument('--test_epochs', type=int, default=2)
     parser.add_argument('--steps_per_epoch', type=int, default=3000) #4000
-    parser.add_argument('--update_every', type=int, default=50) #50
+    parser.add_argument('--update_every', type=int, default=80) #50
+    parser.add_argument('--pi_lr',type=float,default=3e-4) #1e-3
+    parser.add_argument('--q_lr',type=float,default=1e-3) #1e-3
     parser.add_argument('--exp_name', type=str, default='ddpg')
     parser.add_argument('--headless', action='store_true')
     parser.add_argument('--random_start', action='store_false')
@@ -367,6 +369,7 @@ if __name__ == '__main__':
     ddpg(lambda : gym.make(args.env), actor_critic=core.MLPActorCritic,
          ac_kwargs=dict(hidden_sizes=[args.hid]*args.l), 
          gamma=args.gamma, seed=args.seed, epochs=args.epochs, 
+         pi_lr = args.pi_lr, q_lr = args.q_lr,
          act_noise=args.act_noise,
          steps_per_epoch=args.steps_per_epoch,
          num_test_episodes=args.test_epochs,
