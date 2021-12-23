@@ -10,16 +10,19 @@
     may consider use python 3.7, not 3.6 as spinningup required.
     
 # Reward shaping:
-  - test t8 on test-i7(ddpg) and drl-ubuntu(ppo)
+- test t8 on test-i7(ddpg) and drl-ubuntu(ppo)
     - ddpg(test-i7):
       - s0: not learn yet
       - s1: learning from 20 ep
     - ppo(drl-ubuntu)
       - s0:learning from 0 ep
       - s1:learning from 0 ep
-  - test t9 on test-amd
+- test t9 on test-amd
     - ddpg: 3000/50
-      - s0
+      - s0: not learn yet
     - ppo
-      - s0
+      - s0: learning from 0 ep
+- test new ddpg parameter on test i7 
+  - 3000/80, pi_lr = 3e-4
+
 
