@@ -8,4 +8,7 @@
     ImportError: libcoppeliaSim.so.1: cannot open shared object file: No such file or directory
     ```
     may consider use python 3.7, not 3.6 as spinningup required.
+    
+# Reward shaping:
+  - testing t8 on test-i7(ddpg) and drl-ubuntu(ppo)
 
