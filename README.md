@@ -12,20 +12,22 @@
 # Reward shaping:
 - test t8 on test-i7(ddpg) and drl-ubuntu(ppo)
     - ddpg(test-i7):
-      - s0: not learn yet, best dist 0.03-0.04
+      - s0: not learn yet, best dist 0.03-0.04, give up at 300 ep
       - s1: learning from 20 ep, best dist 0.03-0.04
+      - s2: 
     - ppo(drl-ubuntu)
       - s0:learning from 0 ep, best dist 0.03
-      - s1:learning from 0 ep, best diet 0.06
+      - s1:learning from 0 ep, best diet 0.06->0.02
 - test t9 on test-amd
     - Wait until 200 epochs
     - ddpg: 3000/50
-      - s0: not learn yet
+      - s0: not learn yet，need to stop, no progress at all, give up at 300 ep
+    - ddpg: 3000/80
+      - s1:
     - ppo
       - s0: learning from 0 ep
-
 - test new ddpg parameter on test i7 
-  - Wait test t8 finished at least 200 epochs
+  - Wait test t8 s2 finished at least 200 epochs
   - 3000/80, pi_lr = 3e-4
 
 
