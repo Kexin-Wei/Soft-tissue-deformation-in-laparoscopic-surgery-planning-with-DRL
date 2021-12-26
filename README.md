@@ -8,13 +8,13 @@
     ImportError: libcoppeliaSim.so.1: cannot open shared object file: No such file or directory
     ```
     may consider use python 3.7, not 3.6 as spinningup required.
-    
+
 # Reward shaping:
 - test t8 on test-i7(ddpg) and drl-ubuntu(ppo)
     - ddpg(test-i7):
       - s0: not learn yet, best dist 0.03-0.04, give up at 300 ep
       - s1: learning from 20 ep, best dist 0.03-0.04
-      - s2: 
+      - s2:
     - ppo(drl-ubuntu)
       - s0:learning from 0 ep, best dist 0.03
       - s1:learning from 0 ep, best diet 0.06->0.02
@@ -26,7 +26,7 @@
       - s1:
     - ppo
       - s0: learning from 0 ep
-- test new ddpg parameter on test i7 
+- test new ddpg parameter on test i7
   - Wait test t8 s2 finished at least 200 epochs
   - 3000/80, pi_lr = 3e-4
 
