@@ -1,7 +1,7 @@
 #!/bin/bash
 cd ~/spinnup
 source ~/anaconda3/etc/profile.d/conda.sh
-conda activate spinningup
+conda activate pyrep_spinningup
 if [ ! $1 ] || [ $1 == 'train' ]
 then
   
