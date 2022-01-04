@@ -203,13 +203,20 @@ class Laparo_Sim_artery():
         # t11: tau1, tau2, tau3 = np.array([0, 1, 5e-2])*1e0
         # t12: tau1, tau2, tau3 = np.array([0, 1, 5e-1])*1e0
         # t15: tau1, tau2, tau3 = np.array([0, 2, 5e-3])*1e0
-        # t16: 
-        tau1, tau2, tau3 = np.array([0, 0.5, 5e-3])*1e0
+        # t16: tau1, tau2, tau3 = np.array([0, 0.5, 5e-3])*1e0
+        # t5:
+        tau1, tau2, tau3 = np.array([0, 1, 5e-3])*1e0
         self.tt_dist = np.linalg.norm(self.tt[0].get_position()-self.tt[1].get_position())
         liver_x_disp = np.linalg.norm(self.liver.x-self.liver.vertices,axis=-1).mean() #cm        
         tem1 = - tau1 
         # t2:tem2 = - np.power(self.tt_dist,1/3)*tau2 
-        tem2 = - self.tt_dist * tau2 
+        # tem2 = - self.tt_dist * tau2 
+        # t17: 0.03
+        # t18:
+        if self.tt_dist > 0.05:
+            tem2 = -0.05
+        else:
+            tem2 = - self.tt_dist * tau2
         tem3 = - liver_x_disp * tau3        
         self.reward = np.round(tem1 + tem2 + tem3,3)
 
