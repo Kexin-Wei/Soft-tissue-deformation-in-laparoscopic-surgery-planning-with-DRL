@@ -1,0 +1,4 @@
+t15: tau1, tau2, tau3 = np.array([0, 2, 5e-3])*1e0
+t10: self.reward = -10 # error handle
+t9: self.reward = 0.05-self.tt_dist # liver crash
+t9: self.reward = 1 # reach target
