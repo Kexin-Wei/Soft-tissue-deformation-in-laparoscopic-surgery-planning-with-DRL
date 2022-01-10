@@ -210,13 +210,14 @@ class Laparo_Sim_artery():
         liver_x_disp = np.linalg.norm(self.liver.x-self.liver.vertices,axis=-1).mean() #cm        
         tem1 = - tau1 
         # t2:tem2 = - np.power(self.tt_dist,1/3)*tau2 
-        # tem2 = - self.tt_dist * tau2 
+        
         # t17: 0.03
         # t18:
-        if self.tt_dist > 0.05:
-            tem2 = -0.05
-        else:
-            tem2 = - self.tt_dist * tau2
+        # if self.tt_dist > 0.05:
+        #     tem2 = -0.05
+        # else:
+        #     tem2 = - self.tt_dist * tau2
+        tem2 = - self.tt_dist * tau2 
         tem3 = - liver_x_disp * tau3        
         self.reward = np.round(tem1 + tem2 + tem3,3)
 
@@ -235,8 +236,10 @@ class Laparo_Sim_artery():
             #        f"\t reward_dist:{reward_dist:.2f}"
             #        f"\treward_sum:{self.reward}")                     
             #t8: self.reward = -100
-            #t10:
-            self.reward = -10
+            #t10: self.reward = -10
+            #t21: self.reward = -1
+            #t22:
+            self.reward = -0.5
             self.done = 1
             set_reward_string()    
             print(f"{self.reward_string} ***** error") 
@@ -247,8 +250,10 @@ class Laparo_Sim_artery():
             #t5:self.reward = -0.1
             #t6:self.reward += -0.1
             #t7:self.reward += 0.05
-            #t9:
-            self.reward = 0.05-self.tt_dist
+            #t9: self.reward = 0.05-self.tt_dist
+            # t20: self.reward += 0.1-self.tt_dist
+            # t19:
+            self.reward = 0.1-self.tt_dist
             self.done = 1
             set_reward_string()
             print(f"{self.reward_string} ***** crash")
