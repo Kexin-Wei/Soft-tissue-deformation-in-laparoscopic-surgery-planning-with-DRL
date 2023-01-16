@@ -1,4 +1,8 @@
-# spiningup
+# Soft tissue deformation in laparoscopic surgery planning with DRL
+Using Deep Reinforcement Learning to plan a laparoscopic surgical tool (5 Dofs) to reach certain point behind the soft tissue.
+- DRL algorithm from [SpinningUp](https://github.com/openai/spinningup)
+- Soft tissue deformation: from [paper](https://link.springer.com/article/10.1007/PL00007215) ( Cotin, Stéphane, Hervé Delingette, and Nicholas Ayache. "A hybrid elastic model allowing real-time cutting, deformations and force-feedback for surgery training and simulation." Visual Computer 16.8 (2000): 437-452.)
+- Simulation platform: [CoppeliaSim](https://www.coppeliarobotics.com/)
 # Required
 - Spinningup: [Installation Guide](https://spinningup.openai.com/en/latest/user/installation.html)
 - PyRep: [Installation Guide](https://github.com/stepjam/PyRep)
